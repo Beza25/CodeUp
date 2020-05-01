@@ -17,10 +17,12 @@ function testLevelQuestions(){
 
 }
 function renderLevel(level){
+    console.log(level)
 
     const levelDiv = document.getElementById("level-name")
     
     renderQuestion(level.questions[0])
+    debugger
 
     
 
