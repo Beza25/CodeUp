@@ -1,5 +1,6 @@
 
 function showResults(game){
+
     document.getElementById("level-container").hidden = true
     const gameNode = document.getElementById("game-container")
     gameNode.hidden = false
@@ -16,14 +17,33 @@ function showResults(game){
     resultNode.append(resultH1Node, nextGameNode, solutionDivNode, menuDivNode)
 
     let percentage = parseInt((game.correct / game.currentLevel.questions.length) * 100)
-    if(percentage >= 80 ){
+    if(percentage >= 80 ){ //win condition
          //if lose, show percentage, message "You Lose", create CONTINUE button
         resultH1Node.innerText = `${percentage} %  You Win! 😄`
         
         const continueBtn = document.createElement("button")
         continueBtn.innerText = "CONTINUE"
         nextGameNode.appendChild(continueBtn)
+       
         continueBtn.addEventListener("click", () => nextLevel(game))
+
+        //fetch patch .then add event listerners to the buttons so the 
+        //new user object is updated
+        let updatedUser = {level_id: game.user.level.id}
+        fetch(`http://localhost:3000/users/${game.user.id}`, {
+            method: "PATCH",
+            headers: {"Content-Type": "application/json"},
+            body: JSON.stringify(updatedUser)
+        })
+         // if user wins update the user level objec with the next level and 
+        //increment the userlevel.number by one 
+        let userLevel = game.currentLevel.number - 1
+        userLevel++
+        let currentLevelObj = game.level[userLevel] 
+        game.user.level = currentLevelObj
+
+
+
          
     }else{
         resultH1Node.innerText = `${percentage} %  You Lose! 😞`
@@ -34,8 +54,14 @@ function showResults(game){
         nextGameNode.appendChild(replayBtnNode)
         // replayBtnNode.onclick = () => renderLevel(game.level)
         replayBtnNode.addEventListener( "click", () => {
-            console.log(game.level.name)
-            renderLevel(game.level)})
+            // console.log(game.level.name)
+            
+            game.userHP = 100
+            game.bossHP = 100
+            game.counter = 0
+            game.solutions = []
+            game.correct = 0
+            renderLevel(game)})
 
     }
     
@@ -53,28 +79,22 @@ function showResults(game){
     menuBtnNode.innerText = "MENU"
     menuH1Node.appendChild(menuBtnNode)
     menuDivNode.appendChild(menuH1Node)
-  
-
+    menuBtnNode.addEventListener("click", () => handleMenu(game.user))
+    // for this event listener, make it game.user (need to add user to game object)
 }
-function nextLevel(game){
-    
+
+function nextLevel(game){  
     let userLevel = game.currentLevel.number - 1
     userLevel++
- 
-    let currentLevelObj = game.level[userLevel]
-    let levelsArray = game.level
-  
-    game = {
-        userHP: 100,
-        bossHP: 100,
-        status: false,
-        counter: 0,
-        level: levelsArray,
-        correct: 0,
-        solutions: [],
-        currentLevel: currentLevelObj
-        
-      }
+    let currentLevelObj = game.level[userLevel]  
+    
+      game.userHP = 100
+      game.bossHP = 100
+      game.counter = 0
+      game.solutions = []
+      game.currentLevel = currentLevelObj
+      
+
     //   debugger
       //user.level = game.level when we get user login
     renderLevel(game)

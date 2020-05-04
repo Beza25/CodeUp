@@ -19,8 +19,10 @@ function renderLevel(game){
 }
 
 function renderQuestion(game){
-    
+    //console.log(` before: ${game.currentLevel.questions}`)
+    // document.getElementById("profile-container").hidden = true
     let q = game.currentLevel.questions[game.counter]
+    //console.log( `after: ${game.currentLevel.questions}`)
 
     const questionBox = document.getElementById("question-box")
     questionBox.innerHTML = ""
@@ -75,7 +77,8 @@ function renderQuestion(game){
 
 function submitAnswer(e, q, game) {
     e.preventDefault()
-    console.log(game)
+    // console.log(game)
+
     
     // solutions : [ {question1: q}, {answers: [a1,a2,a3,a4]}, { answer: user_selection } }, round2: {q2: {answers: ans}} ... ] 
 
@@ -98,7 +101,7 @@ function submitAnswer(e, q, game) {
                 }
                 
             } else { // WRONG ANSWER
-                console.log("wrong")
+                // console.log("wrong")
                 game.userHP -= 25
                 
                 if(game.userHP <= 0){
@@ -117,5 +120,7 @@ function submitAnswer(e, q, game) {
         }
         //
     })
+
+    // console.log(`userHP: ${game.userHP}, bossHP: ${game.bossHP}`)
     
 }
