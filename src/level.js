@@ -2,28 +2,65 @@ function renderLevel(game){
 
     const levelDiv = document.getElementById("level-name")
     document.getElementById("game-container").hidden = true
-    document.getElementById("level-container").hidden = false
-    // debugger
-    // let game = {
-    //     userHP: 100,
-    //     bossHP: 100,
-    //     status: false,
-    //     counter: 0,
-    //     level: level,
-    //     correct: 0,
-    //     solutions: []
-        
-    //   }
-    renderQuestion(game)
+    const levelContainer = document.getElementById("level-container")
+
+    levelContainer.hidden = false
+   
     
+     // create user avator
+     const leftLevelDiv = document.createElement("div"),
+            centerDiv = document.createElement("div"),
+            rightLevelDiv = document.createElement("div")
+
+    
+    leftLevelDiv.id =  "left-level"
+    centerDiv.id = "center-level"
+    rightLevelDiv.id =  "right-level"
+
+    
+
+     const userAvatorDiv = document.createElement("div"),
+            userHpDiv = document.createElement("div"),
+            userAvatorImg = document.createElement("img")
+    
+    userHpDiv.id = "userHp"
+    userAvatorDiv.id = "user-avatar"
+    userAvatorImg.src = game.user.avatar
+
+    const bossAvatorDiv = document.createElement("div"),
+            bossHpDiv = document.createElement("div"),
+            bossAvatorImg = document.createElement("img")
+
+    bossHpDiv.id = "bossHp"
+    bossAvatorDiv.id = "boss-avatar"
+    bossAvatorImg.src = "https://cdn5.f-cdn.com/contestentries/1475693/24026982/5c7389da5006e_thumb900.jpg"
+     
+
+     userAvatorDiv.appendChild(userAvatorImg) 
+     leftLevelDiv.append(userHpDiv, userAvatorDiv)
+
+     bossAvatorDiv.appendChild(bossAvatorImg) 
+     rightLevelDiv.append(bossHpDiv, bossAvatorDiv)
+
+     //  left    center     right
+      //       | question |
+      //       |   box    |
+      //       |
+      //hpbar  |             boss hp
+      // avatar|             boss ava
+      //       |
+ 
+     levelContainer.append(leftLevelDiv,centerDiv,rightLevelDiv)//left center right)
+     renderQuestion(game)
 }
 
 function renderQuestion(game){
-    //console.log(` before: ${game.currentLevel.questions}`)
-    // document.getElementById("profile-container").hidden = true
+   
     let q = game.currentLevel.questions[game.counter]
     //console.log( `after: ${game.currentLevel.questions}`)
-
+   const centerDiv = document.querySelector("#center-level")
+   
+    
     const questionBox = document.getElementById("question-box")
     questionBox.innerHTML = ""
         const form = document.getElementById("answer-form")
@@ -35,6 +72,7 @@ function renderQuestion(game){
         qDiv.id = "question"
         qDiv.innerText = q.question
         questionBox.append(qDiv, aDiv)
+       
 
       //shuffle the answers
         const answers = [...q.incorrect_answers, q.correct_answer ]
@@ -73,6 +111,10 @@ function renderQuestion(game){
 
         game.solutions.push({question: q.question, answers: shuffledAnswers})
         game.solutions[game.counter].correct_answer = q.correct_answer
+      
+        centerDiv.append(questionBox)
+       
+
 }
 
 function submitAnswer(e, q, game) {

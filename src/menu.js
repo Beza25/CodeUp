@@ -1,7 +1,7 @@
 
 
 function handleMenu(user) {
-   
+ 
     // const user = {name: "Alex", username: "alex", level: 1}
    
     let gameLevel = user.level.number
@@ -11,7 +11,7 @@ function handleMenu(user) {
     const menuPage = document.getElementById("profile-container")
     menuPage.hidden = false
     menuPage.innerHTML = ""
-
+   
 
     const leftMenuDiv = document.createElement("div")
     const topMenuDiv = document.createElement("div")
@@ -46,7 +46,18 @@ function handleMenu(user) {
        avatarDiv.append(avatarImg)
        avatarNode.append(avatarDiv)
        avatarDiv.onclick = () => {
-           avatarDiv.style.border = "thick solid blue"
+           //avatarDiv.querySelectorAll("img")
+          if ( avatarDiv.style.border === "thick solid blue"){
+              
+                avatarDiv.style.border = ""
+            } else {
+                let avaArray = avatarNode.querySelectorAll("div")
+                avaArray.forEach(avatar => avatar.style.border="")
+                avatarDiv.style.border = "thick solid blue"
+            
+                user.avatar = avatarDiv.querySelector("img").src
+                console.log(user.avatar)
+            }
        }
    })
    leftMenuDiv.append(avatarNode)
@@ -103,6 +114,8 @@ function handleMenu(user) {
     })
     bottomMenuDiv.append(bottomDiv)
     menuPage.append(topMenuDiv, centerDiv,bottomMenuDiv  )
+    // debugger
+   
 }
 
 

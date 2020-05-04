@@ -3,6 +3,7 @@ document.addEventListener("DOMContentLoaded", () =>{
     document.getElementById("profile-container").hidden = true
 
     login()
+    // handleMenu()
     // let userLvl = 1 //this will change to the actual users level
     // getLevels(userLvl)
 })

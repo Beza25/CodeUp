@@ -64,10 +64,8 @@ function handleSignUp(e){
          newUser = {
                 name: name,
                 userName: userName,
-  
-            }
-         
-              
+
+            }         
     fetch("http://localhost:3000/users", {
         method: "POST",
         headers: {"Content-Type": "application/json",
@@ -81,36 +79,32 @@ function handleSignUp(e){
 
         document.getElementById("login-container").hidden = true
         handleMenu(newUser)})
-
-        
+ 
 }
 
 function handelSubmit(e){
     e.preventDefault()
+    // debugger
 
-    const userInput = e.target.previousSibling.value
-    e.target.parentElement.reset()
+    const userInput = e.target.querySelector("input").value
+    e.target.reset()
     fetch("http://localhost:3000/users")
     .then(resp => resp.json())
     .then(usersArr => {
-        console.log(usersArr)
+ 
         usersArr.forEach(user => {
-            console.log(user)
+           
             renderUser(user, userInput)
         })
     })
-    
-   
 }
 
 function renderUser(user, userInput){
-    // debugger
- 
-
-    if(user.username === userInput ){
+    if(user.username === userInput ){ 
         document.getElementById("login-container").hidden = true
         // document.getElementById("profile-container").hidden = false
         handleMenu(user)
+        // debugger
     }else{
         
         document.getElementById("login-container").hidden = false
