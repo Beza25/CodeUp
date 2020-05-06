@@ -1,7 +1,9 @@
 document.addEventListener("DOMContentLoaded", () =>{
     document.getElementById("login-container").hidden = false
-    document.getElementById("profile-container").hidden = true
-
+    document.getElementById("profile-container").style.display = "none"
+    document.getElementById("level-container").style.display = "none"
+    document.getElementById("game-container").style.display = "none"
+    document.getElementById("correct-answers-container").style.display = "none"
     login()
     // handleMenu()
     // let userLvl = 1 //this will change to the actual users level
@@ -12,10 +14,8 @@ document.addEventListener("DOMContentLoaded", () =>{
 
 
 function getLevels(gameLevel, user){
-
-
    // if we passs in hte user object, refactor userLvl to user.level.number 
-    document.getElementById("profile-container").hidden = true
+    
     
     fetch("http://localhost:3000/levels")
     .then(resp => resp.json())

@@ -1,20 +1,24 @@
 function login(){
-    document.getElementById("profile-container").hidden = true
-    const loginContainer = document.getElementById("login-container")
-    const loginDiv = document.createElement("div")
-    const loginH1 = document.createElement("h1")
-    loginH1.innerText = "Sign in "
+    document.getElementById("profile-container").style.display = "none"
+    const loginContainer = document.getElementById("login-container"),
+        loginDiv = document.createElement("div"),
+        loginH1 = document.createElement("h1")
+    loginH1.innerText = "Sign In "
+    loginH1.className = "cneter-text"
     
-    const loginForm = document.createElement("form")
-    const loginInput = document.createElement("input")
-    const br = document.createElement("br")
+    const loginForm = document.createElement("form"),
+          loginInput = document.createElement("input"),
+          br = document.createElement("br")
+
+    loginDiv.className = "login-div"
     loginInput.value= ""
     loginInput.type = "text"
     loginInput.name = "username"
-    loginInput.placeholder = "Enter Username"
+    loginInput.placeholder = "Username"
+    
     const submitBtn = document.createElement("button")
     submitBtn.value = "submit"
-    submitBtn.class = "submit"
+    submitBtn.className = "submit"
     submitBtn.innerText = "SUBMIT"
     loginForm.addEventListener("submit", (event) => handelSubmit(event))
 
@@ -29,11 +33,17 @@ function login(){
          userNameInput = document.createElement("input"),
          submitSignUpBtn = document.createElement("button")
 
+    signUpDiv.className = "login-div"
     signUpH1.innerText = "Sign Up"
-    nameInput.placeholder = "Enter your name"
-    userNameInput.placeholder = "Enter your User Name"
+    signUpH1.className = "cneter-text"
+
+    nameInput.placeholder = "Name"
+    userNameInput.placeholder = "User Name"
+    userNameInput.id= "singUp-username"
+  
+
     submitSignUpBtn.value = "submit"
-    submitSignUpBtn.class = "submit"
+    submitSignUpBtn.className = "submit"
     submitSignUpBtn.innerText = "SUBMIT"
     signUpForm.append(nameInput, br2, userNameInput, br3, submitSignUpBtn)
 
@@ -47,11 +57,12 @@ function login(){
 //   [___________________]       display flex 
 
 
-
+    const loginLine = document.createElement("div")
+    loginLine.id = "login-line"
     
     loginForm.append(loginInput, br, submitBtn)
     loginDiv.append(loginH1, loginForm)
-    loginContainer.append(loginDiv, signUpDiv)
+    loginContainer.append(loginDiv, loginLine, signUpDiv)
 
 }
 
@@ -75,14 +86,14 @@ function handleSignUp(e){
     })
     .then(resp => resp.json())
     .then(newUser => {
-        console.log(newUser)
-
-        document.getElementById("login-container").hidden = true
-        handleMenu(newUser)})
+        console.log(newUser) 
+        document.getElementById("login-container").style.display = "none"
+        handleMenu(newUser)  
+    })
  
 }
 
-function handelSubmit(e){
+function handelSubmit(e){ //login
     e.preventDefault()
     // debugger
 
@@ -93,27 +104,33 @@ function handelSubmit(e){
     .then(usersArr => {
  
         usersArr.forEach(user => {
-           
-            renderUser(user, userInput)
+            if(user.username === userInput ){ 
+                document.getElementById("login-container").style.display = "none"
+                handleMenu(user)
+            }
         })
     })
 }
 
-function renderUser(user, userInput){
-    if(user.username === userInput ){ 
-        document.getElementById("login-container").hidden = true
-        // document.getElementById("profile-container").hidden = false
-        handleMenu(user)
-        // debugger
-    }else{
-        
-        document.getElementById("login-container").hidden = false
-        document.getElementById("profile-container").hidden = true
+// function renderUser(user, userInput){
+//     if(user.username === userInput ){ 
+//         console.log("if statment")
+//         document.getElementById("login-container").hidden = true
+//         // document.getElementById("profile-container").hidden = false
+//         handleMenu(user)
+//         // debugger
+//     }else{
+//         console.log("else statment")
+//         // debugger
 
-    }
+        
+//         document.getElementById("login-container").hidden = false
+//         document.getElementById("profile-container").hidden = true
+
+//     }
     
 
-}
+// }
 
 
 

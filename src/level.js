@@ -1,11 +1,13 @@
 function renderLevel(game){
-
+    document.getElementById("profile-container").style.display = "none"
+    document.getElementById("level-container").style.display  = "flex"
+    const  mainContainer = document.getElementById("center-container")
+    mainContainer.style.backgroundImage = "url(https://lh3.googleusercontent.com/proxy/-hvc_cdzJtWotpNUIh1dEoaELOWyRh-CsgKe7BWNfuEjXwYxBa2mfq4tv-iY9GBPC6MbaATfrS-HUd-BI05SCUmPE5FNP8_ldnsHQxaXe0-OzhSjFm3jPfNScWpl7uZjlMjwt0cR)"
+    
     const levelDiv = document.getElementById("level-name")
-    document.getElementById("game-container").hidden = true
+    document.getElementById("game-container").style.display = "none" //##################
     const levelContainer = document.getElementById("level-container")
-
-    levelContainer.hidden = false
-   
+    levelContainer.style.display= "flex"
     
      // create user avator
      const leftLevelDiv = document.createElement("div"),
@@ -24,17 +26,21 @@ function renderLevel(game){
             userAvatorImg = document.createElement("img")
     
     userHpDiv.id = "userHp"
+    userHpDiv.innerHTML = '<div id="user-HpBar"></div>'
     userAvatorDiv.id = "user-avatar"
     userAvatorImg.src = game.user.avatar
+    userAvatorImg.id = "user-avatar-image"
+    userAvatorImg.height = "300"
 
     const bossAvatorDiv = document.createElement("div"),
             bossHpDiv = document.createElement("div"),
             bossAvatorImg = document.createElement("img")
 
     bossHpDiv.id = "bossHp"
+    bossHpDiv.innerHTML = '<div id="boss-HpBar"></div>'
     bossAvatorDiv.id = "boss-avatar"
-    bossAvatorImg.src = "https://cdn5.f-cdn.com/contestentries/1475693/24026982/5c7389da5006e_thumb900.jpg"
-     
+    bossAvatorImg.src = "https://66.media.tumblr.com/42c6cedbebe2a8a41793adc063a938bd/tumblr_ntip7ywsIw1tgzy56o1_400.gifv"
+    bossAvatorImg.height = "300"
 
      userAvatorDiv.appendChild(userAvatorImg) 
      leftLevelDiv.append(userHpDiv, userAvatorDiv)
@@ -50,7 +56,7 @@ function renderLevel(game){
       // avatar|             boss ava
       //       |
  
-     levelContainer.append(leftLevelDiv,centerDiv,rightLevelDiv)//left center right)
+     levelContainer.append(leftLevelDiv,rightLevelDiv,centerDiv)//left center right)
      renderQuestion(game)
 }
 
@@ -104,7 +110,8 @@ function renderQuestion(game){
         //Create a submit button that is a child of form
         const formBtn = document.createElement("button")
         formBtn.value = "submit"
-        formBtn.innerText = "Submit"
+        formBtn.id= "submit-question"
+        formBtn.innerText = "SUBMIT"
         formAnswer.appendChild(formBtn)
         
         formAnswer.onsubmit = () => submitAnswer(event, q, game)
@@ -117,14 +124,25 @@ function renderQuestion(game){
 
 }
 
+
+// [  {av1; { img}, attack: [1..5]}, {av2; { img}, attack: [1..5]}  ]
+
 function submitAnswer(e, q, game) {
     e.preventDefault()
-    // console.log(game)
 
+    const userAvatar = document.getElementById("user-avatar-image")
     
-    // solutions : [ {question1: q}, {answers: [a1,a2,a3,a4]}, { answer: user_selection } }, round2: {q2: {answers: ans}} ... ] 
+    let fightAvatarArr = ["https://media3.giphy.com/media/10i3IdQDBSTsjK/source.gif",
+                        "https://i.pinimg.com/originals/c1/35/d8/c135d8bdc8d1a6b0625b31114ee205a0.gif", 
+                        "https://media1.giphy.com/media/ZGDsOACVB7YU8/source.gif", 
+                        "https://media3.giphy.com/media/10i3IdQDBSTsjK/source.gif",
+                        "https://media.giphy.com/media/rVxbfXk7nOs8w/giphy.gif" ]
+    
 
-    let answerCounter = 0
+    const bossBar = document.getElementById("boss-HpBar"),
+        userBar = document.getElementById("user-HpBar")
+
+
     e.target.querySelectorAll("input").forEach( answer => {
 
         if (answer.checked === true) { 
@@ -133,19 +151,22 @@ function submitAnswer(e, q, game) {
                 game.bossHP -= 25
                 game.correct += 1        
                 game.counter++
-
+                bossBar.style.width = `${game.bossHP * 2}px`
+                let counter = 0
+                userAvatar.src = fightAvatarArr[game.counter]
+                counter++
                 if( game.counter < game.currentLevel.questions.length){
                     renderQuestion(game)
                     
                 } else {
-                    
-                    showResults(game)
+            showResults(game)
+                    // setTimout(() => showResults(game), 2000)
                 }
                 
             } else { // WRONG ANSWER
                 // console.log("wrong")
                 game.userHP -= 25
-                
+                userBar.style.width = `${game.userHP * 2}px`
                 if(game.userHP <= 0){
                     game.userHP = 0
                 }
@@ -157,6 +178,7 @@ function submitAnswer(e, q, game) {
 
                 }else {  
                     showResults(game)
+                    // setTimout(() => showResults(game), 2000)
                 }
             }
         }

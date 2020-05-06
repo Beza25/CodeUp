@@ -1,11 +1,22 @@
 function showSolutions(game){
     const eachQuestionDiv = document.createElement("div"),
         correctAnswersDiv = document.getElementById("correct_answers"),
+        divContainer = document.getElementById("correct-answers-container"),
+        menuDiv = document.createElement("div"),
         hideBtn = document.createElement("button")
+        
+    menuDiv.append(hideBtn)
+    menuDiv.id = "back-Menu"
+    hideBtn.className = "btn"
 
+
+ 
+
+    divContainer.innerHTML = ""
+    divContainer.style.display = "flex"
     correctAnswersDiv.innerHTML = ""
-    correctAnswersDiv.hidden = false 
-
+    correctAnswersDiv.style.display = "flex" 
+    divContainer.append(correctAnswersDiv)
     game.solutions.forEach(solution => {
         const h4 = document.createElement("h4"),
             ul = document.createElement("ul")
@@ -23,19 +34,20 @@ function showSolutions(game){
         li.innerText = answer
         ul.append(li)
         if (li.innerText === solution.user_answer) {
-            li.style.color = "red"
+            li.style.color = "#ff0303"
             li.innerText = "• " + solution.user_answer 
         }
 
         if (li.innerText === solution.correct_answer ||  li.innerText === "• " + solution.correct_answer){
-            li.style.color = "green" 
+            li.style.color = "#04ff19" 
         }
         })  
     })
-   correctAnswersDiv.append(hideBtn)
+
+   divContainer.append(menuDiv)
    hideBtn.innerText = "Back to Results"
    hideBtn.onclick = () => {
-       correctAnswersDiv.hidden = true
+       divContainer.style.display = "none"
        showResults(game)
    }
 }
